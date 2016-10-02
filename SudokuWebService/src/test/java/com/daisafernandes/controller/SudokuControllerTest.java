@@ -25,110 +25,110 @@ import com.daisafernandes.SudokuApplication;
 public class SudokuControllerTest {
 
 	@Autowired
-    private SudokuController sudokuController;
+	private SudokuController sudokuController;
 
-    private MockMvc mockMvc;
-    
-    @Before
-    public void setUp() throws Exception {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(this.sudokuController).build();
-    }
-    
-    @Test
-    public void getBoard() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/sudoku/board"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(MockMvcResultHandlers.print());
-   }
-    
-    @Test
-    public void testControllerInsertEmpty() throws Exception {
-        final String result = "ROW_INVALID";
+	private MockMvc mockMvc;
 
-        this.mockMvc.perform(MockMvcRequestBuilders.put("/sudoku/moves?row=&column=&value=")
-            .contentType(MediaType.TEXT_PLAIN))
-            .andExpect(MockMvcResultMatchers.status().isNotFound())
-            .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"));
+	@Before
+	public void setUp() throws Exception {
+		this.mockMvc = MockMvcBuilders.standaloneSetup(this.sudokuController).build();
+	}
 
-        ResponseEntity<String> response = this.sudokuController.validateValue("", "", "");
+	@Test
+	public void getBoard() throws Exception {
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/sudoku/board"))
+		.andExpect(MockMvcResultMatchers.status().isOk())
+		.andDo(MockMvcResultHandlers.print());
+	}
 
-        Assert.assertTrue(response != null && response.hasBody() && !response.getBody().isEmpty());
-        Assert.assertEquals(result, response.getBody());
-    }
-    
-    @Test
-    public void testControllerInsertLetter() throws Exception {
-        final String result = "COLUMN_NOT_A_DIGIT";
+	@Test
+	public void testControllerInsertEmpty() throws Exception {
+		final String result = "ROW_INVALID";
 
-        this.mockMvc.perform(MockMvcRequestBuilders.put("/sudoku/moves?row=2&column=b&value=5")
-            .contentType(MediaType.TEXT_PLAIN))
-            .andExpect(MockMvcResultMatchers.status().isNotFound())
-            .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"));
+		this.mockMvc.perform(MockMvcRequestBuilders.put("/sudoku/moves?row=&column=&value=")
+				.contentType(MediaType.TEXT_PLAIN))
+		.andExpect(MockMvcResultMatchers.status().isNotFound())
+		.andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"));
 
-        ResponseEntity<String> response = this.sudokuController.validateValue("2", "b", "5");
+		ResponseEntity<String> response = this.sudokuController.validateValue("", "", "");
 
-        Assert.assertTrue(response != null && response.hasBody() && !response.getBody().isEmpty());
-        Assert.assertEquals(result, response.getBody());
-    }
-    
-    @Test
-    public void testControllerInsertInvalidNumber() throws Exception {
-        final String result = "Invalid input COLUMN 11";
+		Assert.assertTrue(response != null && response.hasBody() && !response.getBody().isEmpty());
+		Assert.assertEquals(result, response.getBody());
+	}
 
-        this.mockMvc.perform(MockMvcRequestBuilders.put("/sudoku/moves?row=2&column=11&value=5")
-            .contentType(MediaType.TEXT_PLAIN))
-            .andExpect(MockMvcResultMatchers.status().isOk())
-            .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"));
+	@Test
+	public void testControllerInsertLetter() throws Exception {
+		final String result = "COLUMN_NOT_A_DIGIT";
 
-        ResponseEntity<String> response = this.sudokuController.validateValue("2", "11", "5");
+		this.mockMvc.perform(MockMvcRequestBuilders.put("/sudoku/moves?row=2&column=b&value=5")
+				.contentType(MediaType.TEXT_PLAIN))
+		.andExpect(MockMvcResultMatchers.status().isNotFound())
+		.andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"));
 
-        Assert.assertTrue(response != null && response.hasBody() && !response.getBody().isEmpty());
-        Assert.assertEquals(result, response.getBody());
-    }
+		ResponseEntity<String> response = this.sudokuController.validateValue("2", "b", "5");
 
-    @Test
-    public void testControllerInsertInvalidMove() throws Exception {
-        final String result = "The Board already contains the number 6";
+		Assert.assertTrue(response != null && response.hasBody() && !response.getBody().isEmpty());
+		Assert.assertEquals(result, response.getBody());
+	}
 
-        this.mockMvc.perform(MockMvcRequestBuilders.put("/sudoku/moves?row=3&column=3&value=6")
-            .contentType(MediaType.TEXT_PLAIN).content("{ }"))
-            .andExpect(MockMvcResultMatchers.status().isOk())
-            .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"));
+	@Test
+	public void testControllerInsertInvalidNumber() throws Exception {
+		final String result = "Invalid input COLUMN 11";
 
-        ResponseEntity<String> response = this.sudokuController.validateValue("3", "3", "6");
+		this.mockMvc.perform(MockMvcRequestBuilders.put("/sudoku/moves?row=2&column=11&value=5")
+				.contentType(MediaType.TEXT_PLAIN))
+		.andExpect(MockMvcResultMatchers.status().isOk())
+		.andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"));
 
-        Assert.assertTrue(response != null && response.hasBody() && !response.getBody().isEmpty());
-        Assert.assertEquals(result, response.getBody());
-    }
-    
-    
-    @Test
-    public void testControllerInsertMoveAlreadyFilled() throws Exception {
-        final String result = "The Board Cell is already filled with number 7";
+		ResponseEntity<String> response = this.sudokuController.validateValue("2", "11", "5");
 
-        this.mockMvc.perform(MockMvcRequestBuilders.put("/sudoku/moves?row=0&column=0&value=7")
-            .contentType(MediaType.TEXT_PLAIN))
-            .andExpect(MockMvcResultMatchers.status().isOk())
-            .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"));
+		Assert.assertTrue(response != null && response.hasBody() && !response.getBody().isEmpty());
+		Assert.assertEquals(result, response.getBody());
+	}
 
-        ResponseEntity<String> response = this.sudokuController.validateValue("0", "0", "7");
+	@Test
+	public void testControllerInsertInvalidMove() throws Exception {
+		final String result = "The Board already contains the number 6";
 
-        Assert.assertTrue(response != null && response.hasBody() && !response.getBody().isEmpty());
-        Assert.assertEquals(result, response.getBody());
-    }
-    
-    @Test
-    public void testControllerInsertValidMove() throws Exception{
-    	final String result = "Valid move, value 3, but not completed yet!";
+		this.mockMvc.perform(MockMvcRequestBuilders.put("/sudoku/moves?row=3&column=3&value=6")
+				.contentType(MediaType.TEXT_PLAIN).content("{ }"))
+		.andExpect(MockMvcResultMatchers.status().isOk())
+		.andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"));
 
-        this.mockMvc.perform(MockMvcRequestBuilders.put("/sudoku/moves?row=1&column=6&value=3")
-            .contentType(MediaType.TEXT_PLAIN))
-            .andExpect(MockMvcResultMatchers.status().isOk())
-            .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"));
+		ResponseEntity<String> response = this.sudokuController.validateValue("3", "3", "6");
 
-        ResponseEntity<String> response = this.sudokuController.validateValue("8", "4", "3");
+		Assert.assertTrue(response != null && response.hasBody() && !response.getBody().isEmpty());
+		Assert.assertEquals(result, response.getBody());
+	}
 
-        Assert.assertTrue(response != null && response.hasBody() && !response.getBody().isEmpty());
-        Assert.assertEquals(result, response.getBody());
-    }
+
+	@Test
+	public void testControllerInsertMoveAlreadyFilled() throws Exception {
+		final String result = "The Board Cell is already filled with number 7";
+
+		this.mockMvc.perform(MockMvcRequestBuilders.put("/sudoku/moves?row=0&column=0&value=7")
+				.contentType(MediaType.TEXT_PLAIN))
+		.andExpect(MockMvcResultMatchers.status().isOk())
+		.andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"));
+
+		ResponseEntity<String> response = this.sudokuController.validateValue("0", "0", "7");
+
+		Assert.assertTrue(response != null && response.hasBody() && !response.getBody().isEmpty());
+		Assert.assertEquals(result, response.getBody());
+	}
+
+	@Test
+	public void testControllerInsertValidMove() throws Exception{
+		final String result = "Valid move, value 3, but not completed yet!";
+
+		this.mockMvc.perform(MockMvcRequestBuilders.put("/sudoku/moves?row=1&column=6&value=3")
+				.contentType(MediaType.TEXT_PLAIN))
+		.andExpect(MockMvcResultMatchers.status().isOk())
+		.andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"));
+
+		ResponseEntity<String> response = this.sudokuController.validateValue("8", "4", "3");
+
+		Assert.assertTrue(response != null && response.hasBody() && !response.getBody().isEmpty());
+		Assert.assertEquals(result, response.getBody());
+	}
 }

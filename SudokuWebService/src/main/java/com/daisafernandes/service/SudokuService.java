@@ -22,37 +22,37 @@ public class SudokuService{
 	 * @return
 	 */	
 	public String insertValuesOnSudokuBoard(int row, int column, int value, int[][] board) {
-		
+
 		String validateInput = validateInput(row, column, value);
-				
+
 		if (validateInput != "VALID") {
-		    return validateInput;
-		
+			return validateInput;
+
 		} else {
-			 String msg;
-			 
-			 if(board[row][column] != 0) {
-				 msg = String.format("The Board Cell is already filled with number %d", board[row][column]);
-				 return msg;
-				 
-			 } else {			 
-				 if (isValid(row, column, value, board)) {						
-			    	board[row][column] = value;
-					
-				    if (isSudokuComplete(board)) {
-					    return "Congrats, Your SUDOKU Board is Complete :)!";
-				    } else {
-				    	msg = String.format("Valid move, value %d, but not completed yet!", board[row][column]);
+			String msg;
+
+			if(board[row][column] != 0) {
+				msg = String.format("The Board Cell is already filled with number %d", board[row][column]);
+				return msg;
+
+			} else {			 
+				if (isValid(row, column, value, board)) {						
+					board[row][column] = value;
+
+					if (isSudokuComplete(board)) {
+						return "Congrats, Your SUDOKU Board is Complete :)!";
+					} else {
+						msg = String.format("Valid move, value %d, but not completed yet!", board[row][column]);
 						return msg;
-				    }	
-			    } else {
-			    	msg = String.format("The Board already contains the number %d", value);
-				    return msg;
-			    }
-			 }
+					}	
+				} else {
+					msg = String.format("The Board already contains the number %d", value);
+					return msg;
+				}
+			}
 		}
 	}
-	
+
 	/**
 	 * Validate the inputs, if they are a valid cenario
 	 * @param row
@@ -61,7 +61,7 @@ public class SudokuService{
 	 * @return
 	 */
 	private String validateInput(int row, int column, int value){		
-		
+
 		String msg;
 		if(row < 0 || row > 8){		 
 			msg = String.format("Invalid input ROW %d", row);
@@ -77,9 +77,9 @@ public class SudokuService{
 		}		
 	}
 
-    /**
-     * Verify if the sudoku is complete
-     */
+	/**
+	 * Verify if the sudoku is complete
+	 */
 	private boolean isSudokuComplete(int[][] board) {	
 		int emptyCell = 0;
 		for (int i = 0; i < 9; i++) {
@@ -96,18 +96,18 @@ public class SudokuService{
 		return false;
 	}
 
-    /** 
-     * Check the value in board[i][j] is valid
-     */
+	/** 
+	 * Check the value in board[i][j] is valid
+	 */
 	private boolean isValid(int row, int column, int value, int[][] board) {
-		
+
 		// Check COLUMNs
 		for (int inRow = 0; inRow < 9; inRow++) {
 			if (inRow != row && board[inRow][column] == value) {
 				return false;
 			}
 		}
-		
+
 		// Check ROWs
 		for (int inColumn = 0; inColumn < 9; inColumn++) {
 			if (inColumn != column && board[row][inColumn] == value) {
