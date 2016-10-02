@@ -1,5 +1,3 @@
-# SudokuWebService
-
 #Sudoku Rest WEB Service
 
 This is a RESTful web service that can validate successive moves on a Sudoku board. 
@@ -10,6 +8,7 @@ JAVA 8
 MAVEN 
 
 You can run the application using >>> mvn spring-boot:run
+
 Or build the JAR file with >>> mvn clean package  and Run it
 
 #Operations
