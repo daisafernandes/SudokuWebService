@@ -42,7 +42,7 @@ public class SudokuService{
 				    if (isSudokuComplete(board)) {
 					    return "Congrats, Your SUDOKU Board is Complete :)!";
 				    } else {
-				    	msg = String.format("Valid move, value %d", board[row][column]);
+				    	msg = String.format("Valid move, value %d, but not completed yet!", board[row][column]);
 						return msg;
 				    }	
 			    } else {

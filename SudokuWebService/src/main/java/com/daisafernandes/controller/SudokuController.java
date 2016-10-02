@@ -29,8 +29,8 @@ public class SudokuController {
 	SudokuService sudokuService;
 	
 	@RequestMapping(value = "/board", method = RequestMethod.GET)
-    public int[][] getBoard() {
-		return SudokuBoard.getSudokuBoard();
+    public ResponseEntity<int[][]> getBoard() {
+		return new ResponseEntity<int[][]>(SudokuBoard.getSudokuBoard(), HttpStatus.OK);
     }
 	
 	@RequestMapping(value = "/moves")
