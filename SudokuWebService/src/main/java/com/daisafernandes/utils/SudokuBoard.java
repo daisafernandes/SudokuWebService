@@ -1,7 +1,7 @@
 package com.daisafernandes.utils;
 
 /***
- * 
+ * The Sudoku Board
  * @author daisafernandes
  *
  */

@@ -10,11 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.daisafernandes.service.SudokuService;
 import com.daisafernandes.utils.SudokuBoard;
-
-
+import com.daisafernandes.utils.SudokuConstants;
 
 /***
- * 
+ *  SudokuController is a class used to process HTTP 
+ *  (Requests and Responses) to handle teh following requests
+ *  GET - /sudoku/board , to request thee board
+ *  PUT - /sudoku/moves (row, column, values) to put value into Board
+ *  
  * @author daisafernandes
  *
  */
@@ -37,12 +40,12 @@ public class SudokuController {
 		
 		String returnValidateNull = validateNullOrEmpty(row, column, value); 
 		
-		if (returnValidateNull != "VALID"){
+		if (returnValidateNull != SudokuConstants.VALID){
 			return new ResponseEntity<String>(returnValidateNull, HttpStatus.NOT_FOUND);
 			
 		} else {			
 			String returnValidateDigit = validateDigit(row, column, value);
-			if(returnValidateDigit != "VALID"){
+			if(returnValidateDigit != SudokuConstants.VALID){
 				return new ResponseEntity<String>(returnValidateDigit, HttpStatus.NOT_FOUND);
 				
 			} else {			
@@ -54,40 +57,39 @@ public class SudokuController {
 
 	private String validateNullOrEmpty(String row, String column, String value) {
 		if(row == null || row.isEmpty()){
-			return "ROW_INVALID";
+			return SudokuConstants.ROW_INVALID;
 			
 		} else if (column == null || column.isEmpty()){
-			return "COLUMN_INVALID";
+			return SudokuConstants.COLUMN_INVALID;
 			
 		} else if (value == null || value.isEmpty()){
-			return "VALUE_INVALID";
+			return SudokuConstants.VALUE_INVALID;
 			
 		} else {
-			return "VALID";
+			return SudokuConstants.VALID;
 		}
 	}
 	
 	public String validateDigit(String row, String column, String value) {	
 		
 		if(!Character.isDigit(row.toCharArray()[0])) {
-			return "ROW_NOT_A_DIGIT";
+			return SudokuConstants.ROW_NOT_A_DIGIT;
 			
 		} else if (!Character.isDigit(column.toCharArray()[0])){
-			return "COLUMN_NOT_A_DIGIT";
+			return SudokuConstants.COLUMN_NOT_A_DIGIT;
 			
 		} else if (!Character.isDigit(value.toCharArray()[0])){
-			return "VALUE_NOT_A_DIGIT";
+			return SudokuConstants.VALUE_NOT_A_DIGIT;
 			
 		} else {
-			return "VALID";
+			return SudokuConstants.VALID;
 		}
 	}
 	
 
     private String insertValue(int row, int column, int value) {
     	
-    	int [][] board = SudokuBoard.getSudokuBoard();
-    			
+    	int [][] board = SudokuBoard.getSudokuBoard();    			
     	return sudokuService.insertValuesOnSudokuBoard(row, column, value, board);
     }
 
