@@ -3,6 +3,7 @@ package com.daisafernandes.service;
 import org.springframework.stereotype.Component;
 
 import com.daisafernandes.utils.SudokuBoard;
+import com.daisafernandes.utils.SudokuConstants;
 
 /**
  * SudokuService Class contains the logic to validate moves
@@ -27,7 +28,7 @@ public class SudokuService{
 
 		String validateInput = validateInput(row, column, value);
 
-		if (validateInput != "VALID") {
+		if (validateInput != SudokuConstants.VALID) {
 			return validateInput;
 
 		} else {
@@ -77,7 +78,7 @@ public class SudokuService{
 			msg = String.format("Invalid input VALUE %d", value);
 			return msg;
 		} else {
-			return "VALID";
+			return SudokuConstants.VALID;
 		}		
 	}
 

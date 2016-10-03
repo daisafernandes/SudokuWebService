@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.daisafernandes.SudokuApplication;
 import com.daisafernandes.utils.SudokuBoard;
+import com.daisafernandes.utils.SudokuConstants;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -44,7 +45,7 @@ public class SudokuControllerTest {
 
 	@Test
 	public void testControllerInsertEmpty() throws Exception {
-		final String result = "ROW_INVALID";
+		final String result = SudokuConstants.INVALID_OR_NULL;
 
 		this.mockMvc.perform(MockMvcRequestBuilders.put("/sudoku/moves?row=&column=&value=")
 				.contentType(MediaType.TEXT_PLAIN))
@@ -59,7 +60,7 @@ public class SudokuControllerTest {
 
 	@Test
 	public void testControllerInsertLetter() throws Exception {
-		final String result = "COLUMN_NOT_A_DIGIT";
+		final String result = SudokuConstants.NOT_A_DIGIT;
 
 		this.mockMvc.perform(MockMvcRequestBuilders.put("/sudoku/moves?row=2&column=b&value=b")
 				.contentType(MediaType.TEXT_PLAIN))

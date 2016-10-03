@@ -56,14 +56,9 @@ public class SudokuController {
 	}
 
 	private String validateNullOrEmpty(String row, String column, String value) {
-		if(row == null || row.isEmpty()){
-			return SudokuConstants.ROW_INVALID;
-
-		} else if (column == null || column.isEmpty()){
-			return SudokuConstants.COLUMN_INVALID;
-
-		} else if (value == null || value.isEmpty()){
-			return SudokuConstants.VALUE_INVALID;
+		if((row == null || row.isEmpty()) || (column == null || column.isEmpty()) 
+				|| (value == null || value.isEmpty())){
+			return SudokuConstants.INVALID_OR_NULL;
 
 		} else {
 			return SudokuConstants.VALID;
@@ -71,24 +66,16 @@ public class SudokuController {
 	}
 
 	public String validateDigit(String row, String column, String value) {	
-
-		if(!Character.isDigit(row.toCharArray()[0])) {
-			return SudokuConstants.ROW_NOT_A_DIGIT;
-
-		} else if (!Character.isDigit(column.toCharArray()[0])){
-			return SudokuConstants.COLUMN_NOT_A_DIGIT;
-
-		} else if (!Character.isDigit(value.toCharArray()[0])){
-			return SudokuConstants.VALUE_NOT_A_DIGIT;
+		if((!Character.isDigit(row.toCharArray()[0])) || (!Character.isDigit(column.toCharArray()[0])) 
+				|| (!Character.isDigit(value.toCharArray()[0]))) {
+			return SudokuConstants.NOT_A_DIGIT;
 
 		} else {
 			return SudokuConstants.VALID;
 		}
 	}
 
-
 	private String insertValue(int row, int column, int value) {
-
 		int [][] board = SudokuBoard.getSudokuBoard();    			
 		return sudokuService.insertValuesOnSudokuBoard(row, column, value, board);
 	}
