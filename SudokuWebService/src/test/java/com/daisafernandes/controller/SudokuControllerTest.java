@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.daisafernandes.SudokuApplication;
+import com.daisafernandes.utils.SudokuBoard;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -60,12 +61,12 @@ public class SudokuControllerTest {
 	public void testControllerInsertLetter() throws Exception {
 		final String result = "COLUMN_NOT_A_DIGIT";
 
-		this.mockMvc.perform(MockMvcRequestBuilders.put("/sudoku/moves?row=2&column=b&value=5")
+		this.mockMvc.perform(MockMvcRequestBuilders.put("/sudoku/moves?row=2&column=b&value=b")
 				.contentType(MediaType.TEXT_PLAIN))
 		.andExpect(MockMvcResultMatchers.status().isNotFound())
 		.andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"));
 
-		ResponseEntity<String> response = this.sudokuController.validateValue("2", "b", "5");
+		ResponseEntity<String> response = this.sudokuController.validateValue("2", "b", "b");
 
 		Assert.assertTrue(response != null && response.hasBody() && !response.getBody().isEmpty());
 		Assert.assertEquals(result, response.getBody());
@@ -75,12 +76,12 @@ public class SudokuControllerTest {
 	public void testControllerInsertInvalidNumber() throws Exception {
 		final String result = "Invalid input COLUMN 11";
 
-		this.mockMvc.perform(MockMvcRequestBuilders.put("/sudoku/moves?row=2&column=11&value=5")
+		this.mockMvc.perform(MockMvcRequestBuilders.put("/sudoku/moves?row=2&column=11&value=22")
 				.contentType(MediaType.TEXT_PLAIN))
 		.andExpect(MockMvcResultMatchers.status().isOk())
 		.andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"));
 
-		ResponseEntity<String> response = this.sudokuController.validateValue("2", "11", "5");
+		ResponseEntity<String> response = this.sudokuController.validateValue("2", "11", "22");
 
 		Assert.assertTrue(response != null && response.hasBody() && !response.getBody().isEmpty());
 		Assert.assertEquals(result, response.getBody());
@@ -119,16 +120,78 @@ public class SudokuControllerTest {
 
 	@Test
 	public void testControllerInsertValidMove() throws Exception{
-		final String result = "Valid move, value 3, but not completed yet!";
-
-		this.mockMvc.perform(MockMvcRequestBuilders.put("/sudoku/moves?row=1&column=6&value=3")
+		
+		this.mockMvc.perform(MockMvcRequestBuilders.put("/sudoku/moves?row=8&column=4&value=9")
 				.contentType(MediaType.TEXT_PLAIN))
 		.andExpect(MockMvcResultMatchers.status().isOk())
 		.andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"));
 
-		ResponseEntity<String> response = this.sudokuController.validateValue("8", "4", "3");
-
+	}
+	
+	@Test
+	public void testControllerSudokuComplete() throws Exception{
+		final String result = "Congrats, Your SUDOKU Board is Complete :)!";
+		
+		ResponseEntity<String> response;		
+	
+		response = this.sudokuController.validateValue("0","1","9");
+		response = this.sudokuController.validateValue("0","2","2");
+		response = this.sudokuController.validateValue("0","3","1");
+		response = this.sudokuController.validateValue("0","5","6");
+		response = this.sudokuController.validateValue("0","8","8");
+		response = this.sudokuController.validateValue("1","0","4");
+		response = this.sudokuController.validateValue("1","1","6");
+		response = this.sudokuController.validateValue("1","3","2");
+		response = this.sudokuController.validateValue("1","4","3");
+		response = this.sudokuController.validateValue("1","6","7");
+		response = this.sudokuController.validateValue("1","8","9");
+		response = this.sudokuController.validateValue("2","0","3");
+		response = this.sudokuController.validateValue("2","1","1");
+		response = this.sudokuController.validateValue("2","4","7");
+		response = this.sudokuController.validateValue("2","6","6");
+		response = this.sudokuController.validateValue("2","8","2");
+		response = this.sudokuController.validateValue("3","3","8");
+		response = this.sudokuController.validateValue("3","5","4");
+		response = this.sudokuController.validateValue("3","6","2");
+		response = this.sudokuController.validateValue("3","7","7");
+		response = this.sudokuController.validateValue("4","0","2");
+		response = this.sudokuController.validateValue("4","1","7");
+		response = this.sudokuController.validateValue("4","2","6");
+		response = this.sudokuController.validateValue("4","3","9");
+		response = this.sudokuController.validateValue("4","5","3");
+		response = this.sudokuController.validateValue("4","6","4");
+		response = this.sudokuController.validateValue("4","7","8");
+		response = this.sudokuController.validateValue("5","1","4");
+		response = this.sudokuController.validateValue("5","2","1");
+		response = this.sudokuController.validateValue("5","5","5");
+		response = this.sudokuController.validateValue("5","7","6");
+		response = this.sudokuController.validateValue("5","8","3");		
+		response = this.sudokuController.validateValue("6","1","5");
+		response = this.sudokuController.validateValue("6","4","8");
+		response = this.sudokuController.validateValue("6","5","1");
+		response = this.sudokuController.validateValue("6","6","3");
+		response = this.sudokuController.validateValue("6","7","2");
+		response = this.sudokuController.validateValue("6","8","6");
+		response = this.sudokuController.validateValue("7","0","1");
+		response = this.sudokuController.validateValue("7","1","2");
+		response = this.sudokuController.validateValue("7","2","3");
+		response = this.sudokuController.validateValue("7","3","6");
+		response = this.sudokuController.validateValue("7","6","8");
+		response = this.sudokuController.validateValue("7","7","9");
+		response = this.sudokuController.validateValue("7","8","4");
+		response = this.sudokuController.validateValue("8","1","8");
+		response = this.sudokuController.validateValue("8","2","4");
+		response = this.sudokuController.validateValue("8","3","3");
+		response = this.sudokuController.validateValue("8","4","9");
+		response = this.sudokuController.validateValue("8","5","2");
+		response = this.sudokuController.validateValue("8","6","1");
+		response = this.sudokuController.validateValue("8","8","7");
+	
+		System.out.println(SudokuBoard.getSudokuBoard());
+		
 		Assert.assertTrue(response != null && response.hasBody() && !response.getBody().isEmpty());
 		Assert.assertEquals(result, response.getBody());
 	}
+
+
 }

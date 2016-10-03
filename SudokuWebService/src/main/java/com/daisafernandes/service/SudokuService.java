@@ -2,6 +2,8 @@ package com.daisafernandes.service;
 
 import org.springframework.stereotype.Component;
 
+import com.daisafernandes.utils.SudokuBoard;
+
 /**
  * SudokuService Class contains the logic to validate moves
  * and to validate if the Sudoku bBrd is completed.
@@ -31,7 +33,9 @@ public class SudokuService{
 		} else {
 			String msg;
 
-			if(board[row][column] != 0) {
+			// validate the initial numbers, it can not change
+			int [][] initalBoard = SudokuBoard.getInitialSudokuBoard();
+			if(initalBoard[row][column] != 0) {
 				msg = String.format("The Board Cell is already filled with number %d", board[row][column]);
 				return msg;
 
